@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Audit Env">
-<link rel="manifest" href='data:application/manifest+json,{"name":"Audit Environnemental","short_name":"Audit Env","start_url":".","display":"standalone","orientation":"portrait","theme_color":"#006878","background_color":"#f0f4f5","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22><rect width=%22192%22 height=%22192%22 fill=%22%23006878%22 rx=%2228%22/><text x=%2296%22 y=%22130%22 font-size=%22110%22 text-anchor=%22middle%22 fill=%22white%22>🌿</text></svg>","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},{"src":"data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 fill=%22%23006878%22 rx=%2272%22/><text x=%22256%22 y=%22345%22 font-size=%22290%22 text-anchor=%22middle%22 fill=%22white%22>🌿</text></svg>","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}'>
 <title>Audit Environnemental</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
@@ -32,7 +31,7 @@ textarea{resize:vertical;min-height:64px}
 .btn-secondary{background:#fff;border:1px solid var(--border);color:var(--text)}
 .cat-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px}
 .cat-card:active{background:var(--teal-light)}
-.cat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--teal-light)}
+.cat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;background:var(--teal);color:#fff;letter-spacing:0}
 .cat-info{flex:1;min-width:0}
 .cat-title{font-weight:700;font-size:14px;color:var(--text)}
 .badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
@@ -74,7 +73,7 @@ input[type=file]{display:none}
 <div class="screen" id="s-compat">
   <div class="content" style="justify-content:center;align-items:center;min-height:100vh">
     <div class="card" style="text-align:center;padding:32px 20px">
-      <div style="font-size:48px;margin-bottom:16px">⚠️</div>
+      <div style="font-size:32px;font-weight:700;color:var(--teal);margin-bottom:16px">!</div>
       <h2 style="font-size:17px;font-weight:700;margin-bottom:10px">Navigateur non compatible</h2>
       <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px">Cette application nécessite <strong>Chrome</strong> ou <strong>Edge</strong> pour fonctionner sur Android.</p>
       <div style="background:var(--grey);border-radius:10px;padding:14px;text-align:left;margin-bottom:20px">
@@ -86,8 +85,8 @@ input[type=file]{display:none}
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">
-        <a href="https://play.google.com/store/apps/details?id=com.android.chrome" style="display:block;padding:12px;background:var(--teal);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px">📥 Télécharger Chrome</a>
-        <a href="https://play.google.com/store/apps/details?id=com.microsoft.emmx" style="display:block;padding:12px;background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;text-decoration:none;font-weight:700;font-size:14px">📥 Télécharger Edge</a>
+        <a href="https://play.google.com/store/apps/details?id=com.android.chrome" style="display:block;padding:12px;background:var(--teal);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px">Télécharger Chrome</a>
+        <a href="https://play.google.com/store/apps/details?id=com.microsoft.emmx" style="display:block;padding:12px;background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;text-decoration:none;font-weight:700;font-size:14px">Télécharger Edge</a>
       </div>
     </div>
   </div>
@@ -96,17 +95,37 @@ input[type=file]{display:none}
 <!-- SCREEN: Setup -->
 <div class="screen" id="s-setup">
   <div class="setup-hero">
-    <div style="font-size:36px;margin-bottom:12px">🌿</div>
+    <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:14px">Suivi environnemental</div>
     <h1>Audit Environnemental</h1>
     <p>Suivi environnemental de chantier</p>
   </div>
   <div class="content" style="padding-top:20px">
     <div class="card">
-      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">Choisissez un dossier sur votre téléphone pour stocker les audits et photos.<br><strong style="color:var(--text)">Exemple :</strong> Documents / Audits_Environnement</p>
-      <button class="btn btn-primary" onclick="setupFolder()">📂 Choisir un dossier de travail</button>
+      <div id="setup-prev" style="display:none;font-size:13px;color:var(--muted);margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)"></div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">Choisissez le dossier de travail pour stocker les audits et photos.<br><strong style="color:var(--text)">Exemple :</strong> Documents / Audits_Environnement</p>
+      <button class="btn btn-primary" onclick="setupFolder()">Choisir un dossier de travail</button>
     </div>
     <div class="card" style="text-align:center;color:var(--muted);font-size:13px;padding:18px">
-      🔒 Données stockées uniquement sur votre téléphone.<br>Aucune connexion internet requise.
+      Données stockées uniquement sur votre téléphone.<br>Aucune connexion internet requise.
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: Paramètres -->
+<div class="screen" id="s-settings">
+  <div class="header">
+    <button class="back-btn" onclick="navigate('s-home')">←</button>
+    <h1>Paramètres</h1>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Dossier de travail</div>
+      <div id="settings-folder-name" style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px"></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">Le dossier doit être re-sélectionné à chaque session (limite du navigateur). Le nom est mémorisé.</div>
+      <button class="btn btn-primary" onclick="setupFolderFromSettings()">Changer de dossier</button>
+    </div>
+    <div class="card" style="text-align:center;color:var(--muted);font-size:13px;padding:18px">
+      Version 1.0 — Audit Environnemental Chantier
     </div>
   </div>
 </div>
@@ -114,15 +133,14 @@ input[type=file]{display:none}
 <!-- SCREEN: Home -->
 <div class="screen" id="s-home">
   <div class="header">
-    <span style="font-size:20px">🌿</span>
     <h1>Mes audits</h1>
     <button class="btn btn-primary" style="width:auto;padding:8px 14px;font-size:13px" onclick="navigate('s-new-audit')">+ Nouveau</button>
+    <button onclick="navigate('s-settings')" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0 4px;line-height:1" title="Paramètres">⚙</button>
   </div>
   <div class="content">
     <div id="install-banner" class="card" style="display:none;background:#fff4e0;border-color:#ffd699;padding:14px;position:relative">
       <button onclick="dismissInstall()" style="position:absolute;top:8px;right:8px;background:none;border:none;font-size:18px;color:#b85c00;cursor:pointer;padding:4px 8px">×</button>
       <div style="display:flex;align-items:start;gap:10px">
-        <span style="font-size:22px">📲</span>
         <div style="flex:1">
           <div style="font-weight:700;font-size:13px;color:#b85c00;margin-bottom:4px">Installer l'application</div>
           <div style="font-size:12px;color:#7a4a00;line-height:1.5">Pour une meilleure expérience (plein écran, bouton retour fonctionnel), installez l'app : <strong>Menu Chrome (⋮) → "Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong></div>
@@ -130,7 +148,6 @@ input[type=file]{display:none}
       </div>
     </div>
     <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px">
-      <span style="font-size:20px">📁</span>
       <div style="flex:1;min-width:0">
         <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px">Dossier de travail</div>
         <div id="folder-name" style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)"></div>
@@ -138,7 +155,6 @@ input[type=file]{display:none}
       <button onclick="setupFolder()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;color:var(--muted);font-family:'Lato',sans-serif;white-space:nowrap">Changer</button>
     </div>
     <div id="audit-list-empty" class="card" style="text-align:center;color:var(--muted);padding:36px 16px;display:none">
-      <div style="font-size:40px;margin-bottom:12px">📋</div>
       <p style="font-weight:700;margin-bottom:4px;color:var(--text)">Aucun audit enregistré</p>
       <p style="font-size:13px">Créez votre premier audit de chantier</p>
     </div>
@@ -176,7 +192,7 @@ input[type=file]{display:none}
           <input type="number" id="f-hygro" placeholder="Ex : 35" min="0" max="100">
         </div>
       </div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">💡 Une température élevée et une faible humidité favorisent les émissions de poussières.</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">Une température élevée et une faible humidité favorisent les émissions de poussières.</div>
       <div><label>Travaux en cours</label>
         <div id="travaux-chips" style="margin-top:6px">
           <span class="travaux-chip" onclick="toggleTravaux(this,'Maçonnerie et ferraillage')">Maçonnerie et ferraillage</span>
@@ -189,7 +205,7 @@ input[type=file]{display:none}
         </div>
       </div>
     </div>
-    <button class="btn btn-primary" onclick="createAudit()">Démarrer l'audit →</button>
+    <button class="btn btn-primary" onclick="createAudit()">Démarrer l'audit</button>
   </div>
 </div>
 
@@ -205,7 +221,7 @@ input[type=file]{display:none}
       <div id="travaux-display-chips"></div>
     </div>
     <div id="cat-list"></div>
-    <button class="btn btn-primary" onclick="navigate('s-summary')">Voir le récapitulatif →</button>
+    <button class="btn btn-primary" onclick="navigate('s-summary')">Voir le récapitulatif</button>
   </div>
 </div>
 
@@ -217,7 +233,7 @@ input[type=file]{display:none}
   </div>
   <div class="content" id="items-list"></div>
   <div style="padding:16px;padding-top:0">
-    <button class="btn btn-secondary" onclick="navigate('s-cats')">← Retour aux catégories</button>
+    <button class="btn btn-secondary" onclick="navigate('s-cats')">Retour aux catégories</button>
   </div>
 </div>
 
@@ -228,8 +244,9 @@ input[type=file]{display:none}
     <h1>Récapitulatif</h1>
   </div>
   <div class="content" id="summary-content"></div>
-  <div style="padding:16px;padding-top:0">
-    <button class="btn btn-primary" onclick="exportReport()">📄 Exporter le rapport</button>
+  <div style="padding:16px;padding-top:0;display:flex;flex-direction:column;gap:8px">
+    <button class="btn btn-primary" onclick="exportReport()">Exporter en HTML (avec photos)</button>
+    <button class="btn btn-secondary" onclick="exportWord()">Exporter en Word (.docx)</button>
   </div>
 </div>
 
@@ -237,15 +254,15 @@ input[type=file]{display:none}
 <div id="photo-viewer" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:200;flex-direction:column;align-items:center;justify-content:center">
   <button onclick="closeViewer()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer">✕</button>
   <img id="viewer-img" style="max-width:95vw;max-height:80vh;object-fit:contain;border-radius:8px">
-  <button id="viewer-del" style="margin-top:16px;background:#c62828;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:'Lato',sans-serif;font-weight:700">🗑 Supprimer cette photo</button>
+  <button id="viewer-del" style="margin-top:16px;background:#c62828;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:'Lato',sans-serif;font-weight:700">Supprimer cette photo</button>
 </div>
 
 <!-- Photo menu -->
 <div id="photo-menu" style="display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.4)" onclick="closePhotoMenu()">
   <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;padding:16px;display:flex;flex-direction:column;gap:10px" onclick="event.stopPropagation()">
     <div style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:4px;font-weight:700">Ajouter une photo</div>
-    <button class="btn btn-primary" onclick="closePhotoMenu();document.getElementById('fi-cam').click()">📷 Prendre une photo</button>
-    <button class="btn btn-secondary" onclick="closePhotoMenu();document.getElementById('fi-gal').click()">🖼️ Choisir depuis la galerie</button>
+    <button class="btn btn-primary" onclick="closePhotoMenu();document.getElementById('fi-cam').click()">Prendre une photo</button>
+    <button class="btn btn-secondary" onclick="closePhotoMenu();document.getElementById('fi-gal').click()">Choisir depuis la galerie</button>
     <button class="btn btn-secondary" style="color:var(--muted)" onclick="closePhotoMenu()">Annuler</button>
   </div>
 </div>
@@ -261,15 +278,27 @@ const STATUSES=[
   {v:'AM',l:'À améliorer'},
   {v:'C', l:'Conforme'}
 ];
+
+// Abréviations 2-3 lettres pour les icônes de catégorie (remplacent les emojis)
+const CAT_COLORS={
+  installation:'#78909c', // gris bleuté — organisation générale
+  affichages:  '#1565c0', // bleu — information
+  dechets:     '#4e342e', // marron foncé — gestion matière
+  pollution:   '#c62828', // rouge — risque fort
+  eau:         '#0277bd', // bleu cyan — ressource eau
+  nuisances:   '#e65100', // orange — gênes riverains
+  biodiv:      '#558b2f', // vert clair — nature
+};
+
 const CATS=[
-  {id:'installation',label:'Installation de chantier',icon:'🏗️',items:[
+  {id:'installation',label:'Installation de chantier',abbr:'IC',items:[
     {t:'Respect des emprises (balisage)'},{t:'Implantation Base-vie'},{t:'Zone de stockage'},{t:'Autre'}
   ]},
-  {id:'affichages',label:'Affichages',icon:'📌',items:[
+  {id:'affichages',label:'Affichages',abbr:'AF',items:[
     {t:"Livret d'accueil"},{t:'Sensibilisations'},{t:'Procédure en cas de déversement'},
     {t:"Affichage divers sur l'environnement"},{t:'Informations riverains / usagers'}
   ]},
-  {id:'dechets',label:'Déchets',icon:'🗑️',items:[
+  {id:'dechets',label:'Déchets',abbr:'DC',items:[
     {t:'Zone de tri des déchets (propreté générale)'},
     {t:'Flux – Plastique',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
     {t:'Flux – Carton',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
@@ -284,20 +313,20 @@ const CATS=[
     {t:'Déchets dangereux',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
     {t:'Zone de stockage des terres',sub:'Si pollution : bâchage, etc.'},{t:'Déchets végétaux'}
   ]},
-  {id:'pollution',label:'Pollution eau / air / sol',icon:'⚠️',items:[
+  {id:'pollution',label:'Pollution eau / air / sol',abbr:'PO',items:[
     {t:'Stockage des produits dangereux',sub:'Bac de rétention, container spécifique'},
     {t:'Fiche de compatibilité des produits dangereux'},{t:'Aire de ravitaillement ou entretien'},
     {t:'Aire de lavage outils'},{t:'Aire de lavage des engins'},{t:'Lave-botte'},
     {t:'Kit anti-pollution',sub:'Disponibilité, état, nombre'},
     {t:"Équipement de collecte d'eau toupie béton",sub:'Utilisation, état'}
   ]},
-  {id:'eau',label:"Gestion de l'eau",icon:'💧',items:[
+  {id:'eau',label:"Gestion de l'eau",abbr:'EAU',items:[
     {t:'Points de rejet eaux usées'},{t:'Point de rejet des eaux pluviales'},
     {t:'Équipements pour la gestion des eaux pluviales',sub:'Géotextile, filtre avaloir'},
     {t:'Point de rejet des eaux de chantier'},
     {t:"Équipement pour la gestion des eaux de chantier / eau exhaure",sub:'Pompage, filtre'}
   ]},
-  {id:'nuisances',label:'Nuisances',icon:'📢',items:[
+  {id:'nuisances',label:'Nuisances',abbr:'NU',items:[
     {t:'Propreté générale du chantier'},
     {t:'Engins',sub:'Moteurs en marche, cri du lynx, etc.'},
     {t:'Gestion des émissions sonores',sub:'Sonomètre, capteurs, dispositifs de protection'},
@@ -305,7 +334,7 @@ const CATS=[
     {t:'Gestion des émissions de poussières',sub:'Capteurs, arrosage, dispositif aspirant, balayeuse'},
     {t:'Autre'}
   ]},
-  {id:'biodiv',label:'Biodiversité',icon:'🌱',items:[
+  {id:'biodiv',label:'Biodiversité',abbr:'BIO',items:[
     {t:'Espèces exotiques envahissantes',sub:'Présence, périmètre, espèces'},
     {t:'Espèces protégées',sub:'Présence, périmètre, espèces'},
     {t:'Éclairage'},{t:'Protection des arbres conservés'}
@@ -316,33 +345,24 @@ let dirHandle=null,audits=[],currentAudit=null,currentCatId=null,currentPhotoKey
 let selectedTravaux=[];
 let currentScreen='s-setup';
 
-// ── History / back button ────────────────────────────────
+// ── Navigation ───────────────────────────────────────────
+const navStack=[];
+const BACK_MAP={'s-new-audit':'s-home','s-cats':'s-home','s-items':'s-cats','s-summary':'s-cats','s-settings':'s-home'};
+
 function navigate(id){
-  history.pushState({screen:id},'',null);
+  navStack.push(currentScreen);
+  history.pushState({n:navStack.length},'',null);
   showScreen(id);
 }
-
-// On intercepte TOUS les popstate
-window.addEventListener('popstate', e => {
-  // On réinjecte immédiatement un état pour ne jamais vider l'historique
-  history.pushState({screen: currentScreen}, '', null);
-
-  // Puis on gère la navigation selon l'écran actuel
-  if(currentScreen === 's-home'){
-    showConfirmQuit();
-  } else if(currentScreen === 's-items'){
-    showScreen('s-cats');
-  } else if(currentScreen === 's-cats'){
-    showScreen('s-home');
-  } else if(currentScreen === 's-summary'){
-    showScreen('s-cats');
-  } else if(currentScreen === 's-new-audit'){
-    showScreen('s-home');
-  } else {
-    showScreen('s-home');
-  }
+window.addEventListener('popstate',()=>{
+  history.pushState({n:navStack.length},'',null);
+  goBack();
 });
-
+function goBack(){
+  if(currentScreen==='s-home'){showConfirmQuit();return;}
+  const prev=navStack.length>0?navStack.pop():(BACK_MAP[currentScreen]||'s-home');
+  showScreen(prev);
+}
 let quitOverlay=null;
 function showConfirmQuit(){
   if(quitOverlay) return;
@@ -358,15 +378,8 @@ function showConfirmQuit(){
   </div>`;
   document.body.appendChild(quitOverlay);
 }
-function dismissQuit(){
-  if(quitOverlay){quitOverlay.remove();quitOverlay=null;}
-}
-function confirmQuit(){
-  // On vide l'historique et on laisse Chrome fermer
-  dismissQuit();
-  history.go(-(history.length));
-  setTimeout(()=>window.close(),300);
-}
+function dismissQuit(){if(quitOverlay){quitOverlay.remove();quitOverlay=null;}}
+function confirmQuit(){dismissQuit();history.go(-(history.length));setTimeout(()=>window.close(),300);}
 
 // ── FS helpers ───────────────────────────────────────────
 async function setupFolder(){
@@ -376,6 +389,16 @@ async function setupFolder(){
     await loadAudits();
     document.getElementById('folder-name').textContent=dirHandle.name;
     navigate('s-home');
+  }catch(e){if(e.name!=='AbortError') toast('Erreur : '+e.message);}
+}
+async function setupFolderFromSettings(){
+  try{
+    dirHandle=await window.showDirectoryPicker({mode:'readwrite'});
+    localStorage.setItem('folderName',dirHandle.name);
+    await loadAudits();
+    document.getElementById('folder-name').textContent=dirHandle.name;
+    document.getElementById('settings-folder-name').textContent=dirHandle.name;
+    toast('Dossier mis à jour.');
   }catch(e){if(e.name!=='AbortError') toast('Erreur : '+e.message);}
 }
 async function writeJSON(n,d){const fh=await dirHandle.getFileHandle(n,{create:true});const w=await fh.createWritable();await w.write(JSON.stringify(d,null,2));await w.close();}
@@ -394,6 +417,10 @@ function showScreen(id){
   if(id==='s-home'){renderHome();checkInstallStatus();}
   if(id==='s-cats') renderCats();
   if(id==='s-summary') renderSummary();
+  if(id==='s-settings'){
+    const n=dirHandle?dirHandle.name:(localStorage.getItem('folderName')||'Non configuré');
+    document.getElementById('settings-folder-name').textContent=n;
+  }
 }
 function toast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 
@@ -439,7 +466,7 @@ function renderHome(){
     const st=getStats(a);
     const pct=st.total?Math.round(st.done/st.total*100):0;
     return `<div class="cat-card" onclick="openAudit(${i})">
-      <div class="cat-icon">📋</div>
+      <div class="cat-icon" style="font-size:11px;background:#455a64">AUD</div>
       <div class="cat-info">
         <div class="cat-title">${a.chantier}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:1px">${a.date} · ${a.auditeur}</div>
@@ -499,10 +526,10 @@ function renderCats(){
     const pct=Math.round(st.done/st.total*100);
     let badge=st.nc>0?`<span class="badge badge-ko">${st.nc} NC</span>`:
       st.am>0?`<span class="badge badge-warn">${st.am} AM</span>`:
-      (st.done===st.total&&st.total>0)?`<span class="badge badge-ok">✓</span>`:
+      (st.done===st.total&&st.total>0)?`<span class="badge badge-ok">OK</span>`:
       `<span class="badge badge-pending">${st.done}/${st.total}</span>`;
     return `<div class="cat-card" onclick="openCat('${cat.id}')">
-      <div class="cat-icon">${cat.icon}</div>
+      <div class="cat-icon" style="background:${CAT_COLORS[cat.id]}">${cat.abbr}</div>
       <div class="cat-info"><div class="cat-title">${cat.label}</div>
         <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
       </div>${badge}
@@ -612,7 +639,7 @@ function renderSummary(){
     <div style="width:68px;height:68px;border-radius:50%;border:3px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--teal);margin:0 auto 12px">${pct}%</div>
     <div style="font-weight:700;font-size:16px">${a.chantier}</div>
     <div style="font-size:12px;color:var(--muted);margin-top:4px">${a.date} · ${a.auditeur}</div>
-    ${meteoLine?`<div style="font-size:12px;color:var(--muted);margin-top:2px">🌤 ${meteoLine}</div>`:''}
+    ${meteoLine?`<div style="font-size:12px;color:var(--muted);margin-top:2px">${meteoLine}</div>`:''}
     ${a.travaux&&a.travaux.length?`<div style="margin-top:10px">${a.travaux.map(t=>`<span style="display:inline-block;background:var(--teal);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;margin:2px;font-weight:700">${t}</span>`).join('')}</div>`:''}
     <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
       <div style="background:#e6f4ea;border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#1e6e35">${st.done}</div><div style="font-size:11px;color:#555">renseignés</div></div>
@@ -633,12 +660,12 @@ function renderSummary(){
           ${data.status?`<span class="badge ${sl[data.status]}">${ll[data.status]}</span>`:''}
         </div>
         ${data.note?`<div style="font-size:12px;color:var(--muted);margin-top:4px">${data.note}</div>`:''}
-        ${photos.length?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">📷 ${photos.length} photo(s)</div>`:''}
+        ${photos.length?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">${photos.length} photo(s)</div>`:''}
       </div>`;
     }).filter(Boolean).join('');
     return `<div class="card">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span style="font-size:18px">${cat.icon}</span>
+        <div style="width:28px;height:28px;border-radius:6px;background:${CAT_COLORS[cat.id]};color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">${cat.abbr}</div>
         <span style="font-weight:700;font-size:14px">${cat.label}</span>
         <span style="margin-left:auto" class="badge ${cst.nc>0?'badge-ko':cst.am>0?'badge-warn':'badge-pending'}">${cst.nc>0?cst.nc+' NC':cst.am>0?cst.am+' AM':cst.done+'/'+cst.total}</span>
       </div>
@@ -648,27 +675,247 @@ function renderSummary(){
   document.getElementById('summary-content').innerHTML=html;
 }
 
-// ── Export ───────────────────────────────────────────────
+// ── Export Word ──────────────────────────────────────────
+async function exportWord() {
+  const a = audits[currentAudit];
+
+  if (!window.docx) {
+    toast('Chargement de la librairie Word…', 4000);
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/docx@8.5.0/build/index.umd.js';
+      s.onload = res;
+      s.onerror = () => rej(new Error('Impossible de charger la librairie docx.js. Vérifiez votre connexion internet et réessayez.'));
+      document.head.appendChild(s);
+    }).catch(err => { toast('Erreur : ' + err.message, 6000); throw err; });
+  }
+  if (!window.docx) { toast('Librairie Word non disponible. Vérifiez votre connexion.', 6000); return; }
+
+  toast('Génération du document Word…', 8000);
+
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+          ImageRun, AlignmentType, WidthType, BorderStyle, ShadingType, VerticalAlign } = window.docx;
+
+  // Compression photo : max 600px, JPEG 60%
+  async function compressPhoto(arrayBuffer) {
+    return new Promise(resolve => {
+      const url = URL.createObjectURL(new Blob([arrayBuffer]));
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 600;
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if (w > MAX || h > MAX) { const r = Math.min(MAX/w, MAX/h); w = Math.round(w*r); h = Math.round(h*r); }
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        c.toBlob(b => b.arrayBuffer().then(buf => resolve({ buf, w, h })), 'image/jpeg', 0.60);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+      img.src = url;
+    });
+  }
+
+  const NO_B = { style: BorderStyle.NONE, size: 0 };
+  const NOOP  = { top: NO_B, bottom: NO_B, left: NO_B, right: NO_B };
+  const THIN  = { style: BorderStyle.SINGLE, size: 4, color: 'DDE3E5' };
+  const CELL  = { top: THIN, bottom: THIN, left: THIN, right: THIN };
+
+  const ll      = { C:'Conforme', NC:'Non conforme', AM:'À améliorer', NV:'Non vérifié', NN:'Non concerné' };
+  const badgeBg = { C:'E6F4EA', NC:'FDECEA', AM:'FFF4E0', NV:'F5F7F8', NN:'F5F7F8' };
+  const badgeFg = { C:'1E6E35', NC:'B71C1C', AM:'B85C00', NV:'546E7A', NN:'78909C' };
+
+  function makeBadge(status) {
+    if (!status) return new Paragraph({ text: '' });
+    return new Table({
+      width: { size: 40, type: WidthType.PERCENTAGE },
+      borders: NOOP,
+      rows: [new TableRow({ children: [new TableCell({
+        shading: { type: ShadingType.SOLID, color: badgeBg[status] },
+        borders: NOOP,
+        margins: { top: 60, bottom: 60, left: 120, right: 120 },
+        children: [new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [new TextRun({ text: ll[status], bold: true, size: 18, color: badgeFg[status] })]
+        })]
+      })]})],
+    });
+  }
+
+  const children = [];
+
+  // Bandeau en-tête
+  let meteoLine = a.meteo || '';
+  if (a.temp  != null) meteoLine += (meteoLine ? ' · ' : '') + a.temp + ' °C';
+  if (a.hygro != null) meteoLine += (meteoLine ? ' · ' : '') + 'Humidité : ' + a.hygro + ' %';
+
+  children.push(new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    borders: NOOP,
+    rows: [new TableRow({ children: [new TableCell({
+      shading: { type: ShadingType.SOLID, color: '006878' },
+      borders: NOOP,
+      margins: { top: 300, bottom: 300, left: 400, right: 400 },
+      children: [
+        new Paragraph({ spacing: { after: 80 }, children: [new TextRun({ text: 'RAPPORT DE VISITE', size: 18, color: 'B2D8E0', allCaps: true })] }),
+        new Paragraph({ spacing: { after: 80 }, children: [new TextRun({ text: a.chantier, bold: true, size: 44, color: 'FFFFFF' })] }),
+        ...(a.adresse ? [new Paragraph({ children: [new TextRun({ text: a.adresse, size: 20, color: 'D0EBF0' })] })] : []),
+      ]
+    })]})],
+  }));
+
+  children.push(new Paragraph({ text: '', spacing: { after: 160 } }));
+
+  // Infos chantier
+  const infoRows = [
+    ['Date de visite', a.date,                        'Auditeur',    a.auditeur],
+    ['Adresse',        a.adresse || '—',              'Météo',       meteoLine || '—'],
+    ['Travaux en cours', a.travaux?.length ? a.travaux.join(', ') : '—', 'Généré le', new Date().toLocaleDateString('fr-FR')],
+  ];
+  children.push(new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    borders: CELL,
+    rows: infoRows.map(row => new TableRow({ children: row.map((cell, i) => new TableCell({
+      width: { size: 25, type: WidthType.PERCENTAGE },
+      shading: i % 2 === 0 ? { type: ShadingType.SOLID, color: 'E8F4F6' } : undefined,
+      borders: CELL,
+      margins: { top: 80, bottom: 80, left: 120, right: 120 },
+      children: [new Paragraph({ children: [new TextRun({ text: cell, bold: i % 2 === 0, size: 20 })] })]
+    }))})),
+  }));
+
+  children.push(new Paragraph({ text: '', spacing: { after: 320 } }));
+
+  // Catégories
+  for (const cat of CATS) {
+    const catItems = [];
+    for (let i = 0; i < cat.items.length; i++) {
+      const key = cat.id + '_' + i;
+      const data = (a.items || {})[key] || {};
+      const photoFiles = (a.photos || {})[key] || [];
+      if (!data.status && !data.note && !photoFiles.length) continue;
+      catItems.push({ i, key, data, photoFiles });
+    }
+    if (!catItems.length) continue;
+
+    children.push(new Paragraph({
+      spacing: { before: 400, after: 0 },
+      children: [new TextRun({ text: cat.label.toUpperCase(), bold: true, size: 22, color: '006878' })],
+    }));
+
+    const tableRows = [];
+
+    // En-tête pleine largeur
+    tableRows.push(new TableRow({
+      tableHeader: true,
+      children: [new TableCell({
+        columnSpan: 2,
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        shading: { type: ShadingType.SOLID, color: '006878' },
+        borders: NOOP,
+        margins: { top: 100, bottom: 100, left: 200, right: 200 },
+        children: [new Paragraph({ children: [
+          new TextRun({ text: 'Point examiné  ·  Statut  ·  Remarques', bold: true, color: 'FFFFFF', size: 20 }),
+          new TextRun({ text: '          ', size: 20 }),
+          new TextRun({ text: 'Photos', bold: true, color: 'FFFFFF', size: 20 }),
+        ]})],
+      })],
+    }));
+
+    for (const { i, key, data, photoFiles } of catItems) {
+      const item = cat.items[i];
+
+      // Colonne gauche 40% : titre + sous-titre + badge statut + remarques
+      const leftContent = [
+        new Paragraph({ spacing: { after: 60 }, children: [new TextRun({ text: item.t, bold: true, size: 20 })] }),
+        ...(item.sub ? [new Paragraph({ spacing: { after: 80 }, children: [new TextRun({ text: item.sub, italics: true, size: 18, color: '6B8A90' })] })] : []),
+        makeBadge(data.status),
+        ...(data.note ? [new Paragraph({ spacing: { before: 100 }, children: [new TextRun({ text: data.note, size: 20, color: '333333' })] })] : []),
+      ];
+
+      // Colonne droite 60% : photos uniquement
+      // Largeur cible en pt : 60% de 595pt (A4 - marges) ≈ 357pt → en px docx (1pt ≈ 1.333px) ≈ 268px
+      // On cale les photos en paysage à largeur max, en portrait à hauteur max 220px
+      const rightContent = [];
+      for (const fn of photoFiles) {
+        try {
+          const fh = await dirHandle.getFileHandle(fn);
+          const buf = await (await fh.getFile()).arrayBuffer();
+          const compressed = await compressPhoto(buf);
+          if (!compressed) continue;
+          const isLandscape = compressed.w >= compressed.h;
+          let dispW, dispH;
+          if (isLandscape) {
+            // Paysage : caler sur la largeur max (320px)
+            const MAX_W = 320;
+            const ratio = Math.min(1, MAX_W / compressed.w);
+            dispW = Math.round(compressed.w * ratio);
+            dispH = Math.round(compressed.h * ratio);
+          } else {
+            // Portrait : caler sur la hauteur max (240px)
+            const MAX_H = 240;
+            const ratio = Math.min(1, MAX_H / compressed.h);
+            dispW = Math.round(compressed.w * ratio);
+            dispH = Math.round(compressed.h * ratio);
+          }
+          rightContent.push(new Paragraph({
+            spacing: { before: 60, after: 80 },
+            children: [new ImageRun({ data: compressed.buf, transformation: { width: dispW, height: dispH }, type: 'jpg' })],
+          }));
+        } catch(e) { /* photo inaccessible */ }
+      }
+      if (!rightContent.length) rightContent.push(new Paragraph({ text: '' }));
+
+      tableRows.push(new TableRow({ children: [
+        // Gauche 40%
+        new TableCell({
+          width: { size: 40, type: WidthType.PERCENTAGE },
+          borders: CELL,
+          margins: { top: 100, bottom: 100, left: 140, right: 140 },
+          verticalAlign: VerticalAlign.TOP,
+          children: leftContent,
+        }),
+        // Droite 60%
+        new TableCell({
+          width: { size: 60, type: WidthType.PERCENTAGE },
+          borders: CELL,
+          margins: { top: 100, bottom: 100, left: 100, right: 100 },
+          verticalAlign: VerticalAlign.TOP,
+          children: rightContent,
+        }),
+      ]}));
+    }
+
+    children.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, borders: CELL, rows: tableRows }));
+  }
+
+  const blob = await Packer.toBlob(new Document({ sections: [{ children }] }));
+  const url  = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `Rapport_${a.chantier.replace(/[^a-zA-Z0-9]/g,'_')}_${a.date}.docx`;
+  link.click();
+  URL.revokeObjectURL(url);
+  toast('Document Word téléchargé.', 3500);
+}
+
+// ── Export HTML ──────────────────────────────────────────
 async function exportReport(){
   const a=audits[currentAudit];
-  toast('Génération du rapport...', 6000);
+  toast('Génération du rapport…', 6000);
   const ll={'C':'Conforme','NC':'Non conforme','AM':'À améliorer','NV':'Non vérifié','NN':'Non concerné'};
   const cl={'C':'#1e6e35','NC':'#b71c1c','AM':'#b85c00','NV':'#546e7a','NN':'#78909c'};
   const bg={'C':'#e6f4ea','NC':'#fdecea','AM':'#fff4e0','NV':'#f5f7f8','NN':'#f5f7f8'};
   const st=getStats(a);
-
-  // Météo line
   let meteoLine=a.meteo||'';
   if(a.temp!=null) meteoLine+=(meteoLine?' · ':'')+`${a.temp} °C`;
   if(a.hygro!=null) meteoLine+=(meteoLine?' · ':'')+`Humidité : ${a.hygro} %`;
-
   let body=`
   <div style="background:#006878;padding:32px 36px;margin-bottom:28px">
-    <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Rapport de visite</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700">Rapport de visite</div>
     <h1 style="color:#fff;font-size:24px;margin-bottom:4px;font-weight:700">${a.chantier}</h1>
-    <div style="color:rgba(255,255,255,.85);font-size:14px">${a.adresse||''}</div>
+    <div style="color:rgba(255,255,255,.75);font-size:14px">${a.adresse||''}</div>
   </div>
-
   <table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px">
     <tr>
       <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5;width:22%">Date de visite</td>
@@ -676,135 +923,104 @@ async function exportReport(){
       <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5;width:22%">Auditeur</td>
       <td style="padding:9px 12px;border:1px solid #dde3e5">${a.auditeur}</td>
     </tr>
-    ${meteoLine?`<tr>
-      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Conditions météo</td>
-      <td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${meteoLine}</td>
-    </tr>`:''}
-    ${a.travaux&&a.travaux.length?`<tr>
-      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Travaux en cours</td>
-      <td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${a.travaux.join(', ')}</td>
-    </tr>`:''}
-    <tr>
-      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Généré le</td>
-      <td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}</td>
-    </tr>
+    ${meteoLine?`<tr><td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Conditions météo</td><td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${meteoLine}</td></tr>`:''}
+    ${a.travaux&&a.travaux.length?`<tr><td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Travaux en cours</td><td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${a.travaux.join(', ')}</td></tr>`:''}
+    <tr><td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Généré le</td><td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}</td></tr>
   </table>
-
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:24px 0 32px">
-    <div style="background:#f0f4f5;border-radius:8px;padding:14px;text-align:center;border:1px solid #dde3e5">
-      <div style="font-size:26px;font-weight:700;color:#006878">${st.done}</div>
-      <div style="font-size:11px;color:#6b8a90;margin-top:2px">Items renseignés</div>
-    </div>
-    <div style="background:#e6f4ea;border-radius:8px;padding:14px;text-align:center;border:1px solid #c8e6c9">
-      <div style="font-size:26px;font-weight:700;color:#1e6e35">${st.done-st.nc-st.am}</div>
-      <div style="font-size:11px;color:#6b8a90;margin-top:2px">Conformes</div>
-    </div>
-    <div style="background:#fff4e0;border-radius:8px;padding:14px;text-align:center;border:1px solid #ffe0b2">
-      <div style="font-size:26px;font-weight:700;color:#b85c00">${st.am}</div>
-      <div style="font-size:11px;color:#6b8a90;margin-top:2px">À améliorer</div>
-    </div>
-    <div style="background:#fdecea;border-radius:8px;padding:14px;text-align:center;border:1px solid #ffcdd2">
-      <div style="font-size:26px;font-weight:700;color:#b71c1c">${st.nc}</div>
-      <div style="font-size:11px;color:#6b8a90;margin-top:2px">Non conformes</div>
-    </div>
+    <div style="background:#f0f4f5;border-radius:8px;padding:14px;text-align:center;border:1px solid #dde3e5"><div style="font-size:26px;font-weight:700;color:#006878">${st.done}</div><div style="font-size:11px;color:#6b8a90;margin-top:2px">Items renseignés</div></div>
+    <div style="background:#e6f4ea;border-radius:8px;padding:14px;text-align:center;border:1px solid #c8e6c9"><div style="font-size:26px;font-weight:700;color:#1e6e35">${st.done-st.nc-st.am}</div><div style="font-size:11px;color:#6b8a90;margin-top:2px">Conformes</div></div>
+    <div style="background:#fff4e0;border-radius:8px;padding:14px;text-align:center;border:1px solid #ffe0b2"><div style="font-size:26px;font-weight:700;color:#b85c00">${st.am}</div><div style="font-size:11px;color:#6b8a90;margin-top:2px">À améliorer</div></div>
+    <div style="background:#fdecea;border-radius:8px;padding:14px;text-align:center;border:1px solid #ffcdd2"><div style="font-size:26px;font-weight:700;color:#b71c1c">${st.nc}</div><div style="font-size:11px;color:#6b8a90;margin-top:2px">Non conformes</div></div>
   </div>`;
-
   for(const cat of CATS){
-    let rows='';
-    let hasContent=false;
+    let rows='';let hasContent=false;
     for(let i=0;i<cat.items.length;i++){
       const key=cat.id+'_'+i;
       const data=(a.items||{})[key]||{};
       const photoFiles=(a.photos||{})[key]||[];
       if(!data.status&&!data.note&&!photoFiles.length) continue;
       hasContent=true;
-
-      // Build photos : 2 per row, generous size
       let photoHtml='';
       if(photoFiles.length){
-        photoHtml='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">';
+        photoHtml='<div style="display:flex;flex-wrap:wrap;gap:6px">';
         for(const fn of photoFiles){
           const d=await readAsDataURL(fn);
-          if(d) photoHtml+=`<div style="flex:0 0 calc(50% - 4px)"><img src="${d}" style="width:100%;height:180px;object-fit:cover;border-radius:6px;border:1px solid #dde3e5;display:block"></div>`;
+          if(d) photoHtml+=`<img src="${d}" style="height:160px;width:auto;max-width:100%;object-fit:cover;border-radius:4px;border:1px solid #dde3e5;display:block">`;
         }
         photoHtml+='</div>';
       }
-      const stat=data.status?`<div style="display:inline-block;background:${bg[data.status]};color:${cl[data.status]};padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;margin-bottom:${data.note||photoHtml?'8px':'0'}">${ll[data.status]}</div>`:'';
+      const stat=data.status?`<div style="display:inline-block;background:${bg[data.status]};color:${cl[data.status]};padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-bottom:6px">${ll[data.status]}</div><br>`:'';
       rows+=`<tr>
-        <td style="padding:12px 14px;border:1px solid #dde3e5;vertical-align:top;width:30%">
+        <td style="padding:12px 14px;border:1px solid #dde3e5;vertical-align:top;width:35%">
           <div style="font-weight:700;font-size:13px;color:#1a2a2e">${cat.items[i].t}</div>
           ${cat.items[i].sub?`<div style="font-size:11px;color:#6b8a90;margin-top:3px;line-height:1.4">${cat.items[i].sub}</div>`:''}
-        </td>
-        <td style="padding:12px 14px;border:1px solid #dde3e5;vertical-align:top">
           ${stat}
-          ${data.note?`<div style="font-size:13px;color:#333;line-height:1.5">${data.note}</div>`:''}
-          ${photoHtml}
+          ${data.note?`<div style="font-size:13px;color:#333;line-height:1.5;margin-top:4px">${data.note}</div>`:''}
         </td>
+        <td style="padding:12px 14px;border:1px solid #dde3e5;vertical-align:top">${photoHtml||''}</td>
       </tr>`;
     }
     if(!hasContent) continue;
     body+=`<div style="margin-top:32px">
-      <div style="background:#006878;color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;font-weight:700;font-size:14px">${cat.icon} ${cat.label}</div>
+      <div style="background:#006878;color:#fff;padding:10px 16px;font-weight:700;font-size:13px;letter-spacing:.5px">${cat.label.toUpperCase()}</div>
       <table style="width:100%;border-collapse:collapse;font-size:13px">
         <thead><tr style="background:#f0f4f5">
-          <th style="padding:9px 14px;border:1px solid #dde3e5;text-align:left;font-size:12px;color:#6b8a90;font-weight:700;width:30%">POINT EXAMINÉ</th>
-          <th style="padding:9px 14px;border:1px solid #dde3e5;text-align:left;font-size:12px;color:#6b8a90;font-weight:700">STATUT · REMARQUES · PHOTOS</th>
+          <th style="padding:9px 14px;border:1px solid #dde3e5;text-align:left;font-size:11px;color:#6b8a90;font-weight:700;text-transform:uppercase;letter-spacing:.5px;width:35%">Point examiné · Statut · Remarques</th>
+          <th style="padding:9px 14px;border:1px solid #dde3e5;text-align:left;font-size:11px;color:#6b8a90;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Photos</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
   }
-
   const html=`<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
+<html lang="fr"><head><meta charset="UTF-8">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <title>Audit ${a.chantier} – ${a.date}</title>
-<style>
-  body{font-family:'Lato',Arial,sans-serif;color:#1a2a2e;margin:0;padding:30px;max-width:960px;margin:0 auto}
-  @media print{
-    body{padding:0;max-width:100%}
-    @page{margin:15mm}
-    table{page-break-inside:auto}
-    tr{page-break-inside:avoid}
-    h2{page-break-after:avoid}
-  }
-</style>
-</head>
-<body>
-${body}
+<style>body{font-family:'Lato',Arial,sans-serif;color:#1a2a2e;margin:0;padding:30px;max-width:960px;margin:0 auto}
+@media print{body{padding:0;max-width:100%}@page{margin:15mm}table{page-break-inside:auto}tr{page-break-inside:avoid}}</style>
+</head><body>${body}
 <div style="margin-top:40px;padding-top:12px;border-top:1px solid #dde3e5;font-size:11px;color:#aaa">
-  Rapport généré le ${new Date().toLocaleDateString('fr-FR')} — Application Audit Environnemental Chantier
-</div>
-</body>
-</html>`;
-
+  Rapport généré le ${new Date().toLocaleDateString('fr-FR')} — Audit Environnemental Chantier
+</div></body></html>`;
   const fname=`Rapport_${a.chantier.replace(/[^a-zA-Z0-9]/g,'_')}_${a.date}.html`;
   await writeFile(fname,new Blob([html],{type:'text/html;charset=utf-8'}));
-  toast('✅ Rapport sauvegardé : '+fname, 5000);
+  toast('Rapport sauvegardé : '+fname, 5000);
   const w=window.open('','_blank');
   if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),800);}
 }
 
-function dismissInstall(){
-  localStorage.setItem('installDismissed','1');
-  document.getElementById('install-banner').style.display='none';
-}
+// ── Divers ───────────────────────────────────────────────
+function dismissInstall(){localStorage.setItem('installDismissed','1');document.getElementById('install-banner').style.display='none';}
 function checkInstallStatus(){
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  const dismissed = localStorage.getItem('installDismissed');
-  const banner = document.getElementById('install-banner');
-  if(banner && !isStandalone && !dismissed) banner.style.display='block';
+  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  const dismissed=localStorage.getItem('installDismissed');
+  const banner=document.getElementById('install-banner');
+  if(banner&&!isStandalone&&!dismissed) banner.style.display='block';
 }
 
 // ── Init ─────────────────────────────────────────────────
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 const sn=localStorage.getItem('folderName');
 if(sn) document.getElementById('folder-name').textContent=sn;
-history.replaceState({screen:'s-setup'},'',null);
-if(!('showDirectoryPicker' in window)) showScreen('s-compat');
-else showScreen('s-setup');
+history.replaceState({n:0},'',null);
+history.pushState({n:1},'',null);
+try {
+  if(!('showDirectoryPicker' in window)){
+    showScreen('s-compat');
+  } else {
+    const savedName = localStorage.getItem('folderName');
+    if(savedName){
+      const el = document.getElementById('setup-prev');
+      el.style.display = 'block';
+      el.textContent = 'Dossier précédent : ' + savedName;
+    }
+    showScreen('s-setup');
+  }
+} catch(e) {
+  console.error('Init error:', e);
+  showScreen('s-setup');
+}
 </script>
 </body>
 </html>
