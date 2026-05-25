@@ -44,7 +44,7 @@ Le nom du dossier est mémorisé entre les sessions. À chaque réouverture, le 
 
 Une fois le dossier configuré, créer un nouvel audit via le bouton correspondant, renseigner les informations du chantier, puis naviguer dans les catégories pour compléter la visite.
 
-Le dossier de travail peut être modifié à tout moment depuis l'écran **Paramètres** (icône ⚙ en haut à droite de l'accueil).
+Le dossier de travail peut être modifié à tout moment depuis l'écran **Paramètres** (icône en haut à droite de l'accueil).
 
 ---
 
