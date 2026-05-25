@@ -11,14 +11,18 @@ Application mobile de suivi environnemental de chantier, conçue pour les visite
 - Prise de photos depuis l'appareil photo ou la galerie, associées directement à chaque item
 - Champ de remarques par item
 - Récapitulatif de visite avec avancement par catégorie
-- Export d'un rapport complet avec photos intégrées, compatible Microsoft Word
+- Export d'un rapport complet en **HTML** (avec photos intégrées) et en **Word (.docx)** directement depuis l'application
+- Compression automatique des photos à l'export pour alléger les fichiers
 - Données stockées localement sur l'appareil — aucun envoi sur internet
+- Écran Paramètres pour changer le dossier de travail en cours d'utilisation
 
 ---
 
 ## Compatibilité
 
-L'application fonctionne sur **Android uniquement**, avec **Chrome ou Edge**. Elle n'est pas compatible avec Firefox, Samsung Internet ou Safari iOS.
+L'application fonctionne sur **Android** et **PC/Mac**, avec **Chrome ou Edge**. Elle n'est pas compatible avec Firefox, Samsung Internet ou Safari iOS.
+
+> Sur PC, l'application peut être ouverte directement depuis le fichier `.html` dans Edge ou Chrome, sans installation. Elle est principalement conçue pour une utilisation mobile sur le terrain.
 
 ---
 
@@ -34,26 +38,36 @@ L'application fonctionne sur **Android uniquement**, avec **Chrome ou Edge**. El
 
 ## Première utilisation
 
-Au premier lancement, l'application demande de choisir un dossier sur le téléphone pour stocker les audits et les photos. Créer un dossier dédié est recommandé, par exemple `Documents/Audits_Environnement`.
+Au premier lancement, l'application demande de choisir un dossier sur l'appareil pour stocker les audits et les photos. Créer un dossier dédié est recommandé, par exemple `Documents/Audits_Environnement`.
+
+Le nom du dossier est mémorisé entre les sessions. À chaque réouverture, le navigateur demande de confirmer l'accès au dossier — il suffit de sélectionner le même dossier dans la fenêtre qui s'ouvre. Sur Android/Chrome, le navigateur s'ouvre directement au bon endroit.
 
 Une fois le dossier configuré, créer un nouvel audit via le bouton correspondant, renseigner les informations du chantier, puis naviguer dans les catégories pour compléter la visite.
+
+Le dossier de travail peut être modifié à tout moment depuis l'écran **Paramètres** (icône ⚙ en haut à droite de l'accueil).
 
 ---
 
 ## Export du rapport
 
-Le rapport est généré en format HTML et sauvegardé dans le dossier de travail choisi à la configuration.
+Deux formats sont disponibles depuis l'écran de récapitulatif :
 
-Pour l'ouvrir dans Word sur PC :
-1. Transférer le fichier `.html` sur l'ordinateur (OneDrive, Teams, email)
+### Export HTML (avec photos)
+Le rapport est généré et sauvegardé dans le dossier de travail. Pour l'ouvrir dans Word sur PC :
+1. Transférer le fichier `.html` sur l'ordinateur (OneDrive, Teams, email…)
 2. Dans Word : Fichier > Ouvrir > sélectionner le fichier
 3. Le rapport s'affiche avec les photos intégrées
 4. Il peut ensuite être enregistré en `.docx` ou exporté en PDF
+
+### Export Word (.docx)
+Le fichier `.docx` est généré directement et téléchargé sur l'appareil. Il peut être ouvert dans Microsoft Word sans manipulation supplémentaire. Les photos sont compressées automatiquement pour alléger le fichier.
+
+> L'export Word nécessite une connexion internet au premier usage (chargement de la librairie docx.js). Les exports suivants dans la même session n'en ont pas besoin.
 
 ---
 
 ## Points d'attention
 
 - En cas de changement de téléphone, sauvegarder le dossier de travail sur OneDrive avant la migration
-- Le rapport doit être exporté à la fin de chaque visite — c'est la sauvegarde principale des données
-- Les mises à jour de l'application sont automatiques au prochain lancement, si le téléphone est connecté à internet
+- Le rapport doit être exporté à la fin de chaque visite — c'est la sauvegarde principale des données structurées
+- Les mises à jour de l'application sont automatiques au prochain lancement, si l'appareil est connecté à internet
