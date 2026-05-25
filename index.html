@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#006878">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Audit Env">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Audit Environnemental","short_name":"Audit Env","start_url":".","display":"standalone","orientation":"portrait","theme_color":"#006878","background_color":"#f0f4f5","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22><rect width=%22192%22 height=%22192%22 fill=%22%23006878%22 rx=%2228%22/><text x=%2296%22 y=%22130%22 font-size=%22110%22 text-anchor=%22middle%22 fill=%22white%22>🌿</text></svg>","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},{"src":"data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 fill=%22%23006878%22 rx=%2272%22/><text x=%22256%22 y=%22345%22 font-size=%22290%22 text-anchor=%22middle%22 fill=%22white%22>🌿</text></svg>","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}'>
+<title>Audit Environnemental</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lato',sans-serif;background:#f0f4f5;color:#1a1a1a;font-size:15px;-webkit-tap-highlight-color:transparent}
+:root{--teal:#006878;--teal-dark:#004e5c;--teal-light:#e0f0f3;--teal-mid:#b2d8e0;--grey:#f5f7f8;--border:#dde3e5;--text:#1a2a2e;--muted:#6b8a90}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+.header{background:var(--teal);padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+.header h1{font-size:16px;font-weight:700;flex:1;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back-btn{background:none;border:none;font-size:22px;cursor:pointer;color:#fff;padding:0 6px}
+.content{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:'Lato',sans-serif;color:var(--text);background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+textarea{resize:vertical;min-height:64px}
+.btn{display:block;width:100%;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;text-align:center;font-family:'Lato',sans-serif}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:active{background:var(--teal-dark)}
+.btn-secondary{background:#fff;border:1px solid var(--border);color:var(--text)}
+.cat-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px}
+.cat-card:active{background:var(--teal-light)}
+.cat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--teal-light)}
+.cat-info{flex:1;min-width:0}
+.cat-title{font-weight:700;font-size:14px;color:var(--text)}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
+.badge-ok{background:#e6f4ea;color:#1e6e35}
+.badge-warn{background:#fff4e0;color:#b85c00}
+.badge-ko{background:#fdecea;color:#b71c1c}
+.badge-na{background:#f5f5f5;color:#888}
+.badge-pending{background:var(--teal-light);color:var(--teal-dark)}
+.progress-bar{height:5px;background:var(--teal-mid);border-radius:3px;overflow:hidden;margin-top:7px}
+.progress-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .3s}
+.item-block{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:10px}
+.item-title{font-weight:700;font-size:14px;color:var(--text);margin-bottom:10px;line-height:1.4}
+.sub-item{font-size:13px;color:var(--muted);margin-bottom:8px}
+.status-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.status-btn{padding:6px 10px;border-radius:20px;border:1px solid var(--border);font-size:11px;cursor:pointer;background:#fff;color:#555;font-weight:700;font-family:'Lato',sans-serif;white-space:nowrap}
+.status-btn.s-NC{border-color:#ef5350;color:#b71c1c;background:#fdecea}
+.status-btn.s-AM{border-color:#ff9800;color:#b85c00;background:#fff4e0}
+.status-btn.s-C{border-color:#4caf50;color:#1e6e35;background:#e6f4ea}
+.status-btn.s-NV{border-color:#90a4ae;color:#546e7a;background:#f5f7f8}
+.status-btn.s-NN{border-color:#b0bec5;color:#78909c;background:#f5f7f8}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.photo-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2a2e;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;font-family:'Lato',sans-serif;white-space:nowrap}
+.toast.show{opacity:1}
+.travaux-chip{display:inline-block;background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:20px;padding:6px 14px;font-size:13px;margin:4px;cursor:pointer;color:var(--teal-dark);font-weight:700}
+.travaux-chip.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+input[type=file]{display:none}
+.setup-hero{background:var(--teal);padding:40px 20px 28px;text-align:center}
+.setup-hero h1{color:#fff;font-size:22px;font-weight:700;margin-bottom:6px}
+.setup-hero p{color:rgba(255,255,255,.8);font-size:14px}
+.optional-tag{font-size:10px;background:#f0f4f5;color:var(--muted);border-radius:4px;padding:1px 5px;margin-left:6px;font-weight:400;text-transform:none;letter-spacing:0}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- SCREEN: Compat -->
+<div class="screen" id="s-compat">
+  <div class="content" style="justify-content:center;align-items:center;min-height:100vh">
+    <div class="card" style="text-align:center;padding:32px 20px">
+      <div style="font-size:48px;margin-bottom:16px">⚠️</div>
+      <h2 style="font-size:17px;font-weight:700;margin-bottom:10px">Navigateur non compatible</h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px">Cette application nécessite <strong>Chrome</strong> ou <strong>Edge</strong> pour fonctionner sur Android.</p>
+      <div style="background:var(--grey);border-radius:10px;padding:14px;text-align:left;margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px">Comment faire :</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.9">
+          1. Installez <strong>Chrome</strong> ou <strong>Edge</strong> depuis le Play Store<br>
+          2. Ouvrez le fichier <code style="background:#dde3e5;padding:1px 5px;border-radius:4px">audit.html</code> avec ce navigateur<br>
+          3. Relancez l'application
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a href="https://play.google.com/store/apps/details?id=com.android.chrome" style="display:block;padding:12px;background:var(--teal);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px">📥 Télécharger Chrome</a>
+        <a href="https://play.google.com/store/apps/details?id=com.microsoft.emmx" style="display:block;padding:12px;background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;text-decoration:none;font-weight:700;font-size:14px">📥 Télécharger Edge</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: Setup -->
+<div class="screen" id="s-setup">
+  <div class="setup-hero">
+    <div style="font-size:36px;margin-bottom:12px">🌿</div>
+    <h1>Audit Environnemental</h1>
+    <p>Suivi environnemental de chantier</p>
+  </div>
+  <div class="content" style="padding-top:20px">
+    <div class="card">
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">Choisissez un dossier sur votre téléphone pour stocker les audits et photos.<br><strong style="color:var(--text)">Exemple :</strong> Documents / Audits_Environnement</p>
+      <button class="btn btn-primary" onclick="setupFolder()">📂 Choisir un dossier de travail</button>
+    </div>
+    <div class="card" style="text-align:center;color:var(--muted);font-size:13px;padding:18px">
+      🔒 Données stockées uniquement sur votre téléphone.<br>Aucune connexion internet requise.
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: Home -->
+<div class="screen" id="s-home">
+  <div class="header">
+    <span style="font-size:20px">🌿</span>
+    <h1>Mes audits</h1>
+    <button class="btn btn-primary" style="width:auto;padding:8px 14px;font-size:13px" onclick="navigate('s-new-audit')">+ Nouveau</button>
+  </div>
+  <div class="content">
+    <div id="install-banner" class="card" style="display:none;background:#fff4e0;border-color:#ffd699;padding:14px;position:relative">
+      <button onclick="dismissInstall()" style="position:absolute;top:8px;right:8px;background:none;border:none;font-size:18px;color:#b85c00;cursor:pointer;padding:4px 8px">×</button>
+      <div style="display:flex;align-items:start;gap:10px">
+        <span style="font-size:22px">📲</span>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:13px;color:#b85c00;margin-bottom:4px">Installer l'application</div>
+          <div style="font-size:12px;color:#7a4a00;line-height:1.5">Pour une meilleure expérience (plein écran, bouton retour fonctionnel), installez l'app : <strong>Menu Chrome (⋮) → "Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px">
+      <span style="font-size:20px">📁</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px">Dossier de travail</div>
+        <div id="folder-name" style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)"></div>
+      </div>
+      <button onclick="setupFolder()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;color:var(--muted);font-family:'Lato',sans-serif;white-space:nowrap">Changer</button>
+    </div>
+    <div id="audit-list-empty" class="card" style="text-align:center;color:var(--muted);padding:36px 16px;display:none">
+      <div style="font-size:40px;margin-bottom:12px">📋</div>
+      <p style="font-weight:700;margin-bottom:4px;color:var(--text)">Aucun audit enregistré</p>
+      <p style="font-size:13px">Créez votre premier audit de chantier</p>
+    </div>
+    <div id="audit-list"></div>
+  </div>
+</div>
+
+<!-- SCREEN: New Audit -->
+<div class="screen" id="s-new-audit">
+  <div class="header">
+    <button class="back-btn" onclick="navigate('s-home')">←</button>
+    <h1>Nouvel audit</h1>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div style="margin-bottom:14px"><label>Nom du chantier *</label><input type="text" id="f-chantier" placeholder="Ex : Résidence Les Acacias"></div>
+      <div style="margin-bottom:14px"><label>Adresse</label><input type="text" id="f-adresse" placeholder="Rue, ville..."></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div><label>Date *</label><input type="date" id="f-date"></div>
+        <div><label>Auditeur *</label><input type="text" id="f-auditeur" placeholder="Votre nom"></div>
+      </div>
+      <div style="margin-bottom:14px"><label>Météo</label>
+        <select id="f-meteo">
+          <option value="">-- Sélectionner --</option>
+          <option>Beau temps</option><option>Nuageux</option><option>Pluie</option><option>Vent fort</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div>
+          <label>Température <span class="optional-tag">optionnel</span></label>
+          <input type="number" id="f-temp" placeholder="Ex : 28" min="-20" max="50">
+        </div>
+        <div>
+          <label>Humidité <span class="optional-tag">optionnel</span></label>
+          <input type="number" id="f-hygro" placeholder="Ex : 35" min="0" max="100">
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">💡 Une température élevée et une faible humidité favorisent les émissions de poussières.</div>
+      <div><label>Travaux en cours</label>
+        <div id="travaux-chips" style="margin-top:6px">
+          <span class="travaux-chip" onclick="toggleTravaux(this,'Maçonnerie et ferraillage')">Maçonnerie et ferraillage</span>
+          <span class="travaux-chip" onclick="toggleTravaux(this,'Terrassement des quais')">Terrassement des quais</span>
+          <span class="travaux-chip" onclick="toggleTravaux(this,'Gros œuvre')">Gros œuvre</span>
+          <span class="travaux-chip" onclick="toggleTravaux(this,'Second œuvre')">Second œuvre</span>
+          <span class="travaux-chip" onclick="toggleTravaux(this,'VRD')">VRD</span>
+          <span class="travaux-chip" onclick="toggleTravaux(this,'Démolition')">Démolition</span>
+          <span class="travaux-chip" onclick="toggleTravaux(this,'Espaces verts')">Espaces verts</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="createAudit()">Démarrer l'audit →</button>
+  </div>
+</div>
+
+<!-- SCREEN: Categories -->
+<div class="screen" id="s-cats">
+  <div class="header">
+    <button class="back-btn" onclick="navigate('s-home')">←</button>
+    <h1 id="cat-screen-title">Audit</h1>
+  </div>
+  <div class="content">
+    <div id="travaux-display" class="card" style="padding:12px 16px;display:none">
+      <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Travaux en cours</div>
+      <div id="travaux-display-chips"></div>
+    </div>
+    <div id="cat-list"></div>
+    <button class="btn btn-primary" onclick="navigate('s-summary')">Voir le récapitulatif →</button>
+  </div>
+</div>
+
+<!-- SCREEN: Items -->
+<div class="screen" id="s-items">
+  <div class="header">
+    <button class="back-btn" onclick="navigate('s-cats')">←</button>
+    <h1 id="items-title">Catégorie</h1>
+  </div>
+  <div class="content" id="items-list"></div>
+  <div style="padding:16px;padding-top:0">
+    <button class="btn btn-secondary" onclick="navigate('s-cats')">← Retour aux catégories</button>
+  </div>
+</div>
+
+<!-- SCREEN: Summary -->
+<div class="screen" id="s-summary">
+  <div class="header">
+    <button class="back-btn" onclick="navigate('s-cats')">←</button>
+    <h1>Récapitulatif</h1>
+  </div>
+  <div class="content" id="summary-content"></div>
+  <div style="padding:16px;padding-top:0">
+    <button class="btn btn-primary" onclick="exportReport()">📄 Exporter le rapport</button>
+  </div>
+</div>
+
+<!-- Photo viewer -->
+<div id="photo-viewer" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:200;flex-direction:column;align-items:center;justify-content:center">
+  <button onclick="closeViewer()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer">✕</button>
+  <img id="viewer-img" style="max-width:95vw;max-height:80vh;object-fit:contain;border-radius:8px">
+  <button id="viewer-del" style="margin-top:16px;background:#c62828;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:'Lato',sans-serif;font-weight:700">🗑 Supprimer cette photo</button>
+</div>
+
+<!-- Photo menu -->
+<div id="photo-menu" style="display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.4)" onclick="closePhotoMenu()">
+  <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;padding:16px;display:flex;flex-direction:column;gap:10px" onclick="event.stopPropagation()">
+    <div style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:4px;font-weight:700">Ajouter une photo</div>
+    <button class="btn btn-primary" onclick="closePhotoMenu();document.getElementById('fi-cam').click()">📷 Prendre une photo</button>
+    <button class="btn btn-secondary" onclick="closePhotoMenu();document.getElementById('fi-gal').click()">🖼️ Choisir depuis la galerie</button>
+    <button class="btn btn-secondary" style="color:var(--muted)" onclick="closePhotoMenu()">Annuler</button>
+  </div>
+</div>
+
+<input type="file" id="fi-cam" accept="image/*" capture="environment" onchange="handlePhotos(event)">
+<input type="file" id="fi-gal" accept="image/*" multiple onchange="handlePhotos(event)">
+
+<script>
+const STATUSES=[
+  {v:'NN',l:'Non concerné'},
+  {v:'NV',l:'Non vérifié'},
+  {v:'NC',l:'Non conforme'},
+  {v:'AM',l:'À améliorer'},
+  {v:'C', l:'Conforme'}
+];
+const CATS=[
+  {id:'installation',label:'Installation de chantier',icon:'🏗️',items:[
+    {t:'Respect des emprises (balisage)'},{t:'Implantation Base-vie'},{t:'Zone de stockage'},{t:'Autre'}
+  ]},
+  {id:'affichages',label:'Affichages',icon:'📌',items:[
+    {t:"Livret d'accueil"},{t:'Sensibilisations'},{t:'Procédure en cas de déversement'},
+    {t:"Affichage divers sur l'environnement"},{t:'Informations riverains / usagers'}
+  ]},
+  {id:'dechets',label:'Déchets',icon:'🗑️',items:[
+    {t:'Zone de tri des déchets (propreté générale)'},
+    {t:'Flux – Plastique',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Flux – Carton',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Flux – Bois',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Flux – Verre',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Flux – Fractions minérales',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Flux – Plâtre',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Flux – DIB',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Autres déchets'},
+    {t:'Déchets base-vie',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Zone de tri déchets dangereux',sub:'Éloignée des zones sensibles'},
+    {t:'Déchets dangereux',sub:'Contenant adapté, signalétique, accès, surcharge, respect tri'},
+    {t:'Zone de stockage des terres',sub:'Si pollution : bâchage, etc.'},{t:'Déchets végétaux'}
+  ]},
+  {id:'pollution',label:'Pollution eau / air / sol',icon:'⚠️',items:[
+    {t:'Stockage des produits dangereux',sub:'Bac de rétention, container spécifique'},
+    {t:'Fiche de compatibilité des produits dangereux'},{t:'Aire de ravitaillement ou entretien'},
+    {t:'Aire de lavage outils'},{t:'Aire de lavage des engins'},{t:'Lave-botte'},
+    {t:'Kit anti-pollution',sub:'Disponibilité, état, nombre'},
+    {t:"Équipement de collecte d'eau toupie béton",sub:'Utilisation, état'}
+  ]},
+  {id:'eau',label:"Gestion de l'eau",icon:'💧',items:[
+    {t:'Points de rejet eaux usées'},{t:'Point de rejet des eaux pluviales'},
+    {t:'Équipements pour la gestion des eaux pluviales',sub:'Géotextile, filtre avaloir'},
+    {t:'Point de rejet des eaux de chantier'},
+    {t:"Équipement pour la gestion des eaux de chantier / eau exhaure",sub:'Pompage, filtre'}
+  ]},
+  {id:'nuisances',label:'Nuisances',icon:'📢',items:[
+    {t:'Propreté générale du chantier'},
+    {t:'Engins',sub:'Moteurs en marche, cri du lynx, etc.'},
+    {t:'Gestion des émissions sonores',sub:'Sonomètre, capteurs, dispositifs de protection'},
+    {t:'Gestion des vibrations',sub:'Capteurs'},
+    {t:'Gestion des émissions de poussières',sub:'Capteurs, arrosage, dispositif aspirant, balayeuse'},
+    {t:'Autre'}
+  ]},
+  {id:'biodiv',label:'Biodiversité',icon:'🌱',items:[
+    {t:'Espèces exotiques envahissantes',sub:'Présence, périmètre, espèces'},
+    {t:'Espèces protégées',sub:'Présence, périmètre, espèces'},
+    {t:'Éclairage'},{t:'Protection des arbres conservés'}
+  ]}
+];
+
+let dirHandle=null,audits=[],currentAudit=null,currentCatId=null,currentPhotoKey=null;
+let selectedTravaux=[];
+let currentScreen='s-setup';
+
+// ── History / back button ────────────────────────────────
+function navigate(id){
+  history.pushState({screen:id},'',null);
+  showScreen(id);
+}
+
+// On intercepte TOUS les popstate
+window.addEventListener('popstate', e => {
+  // On réinjecte immédiatement un état pour ne jamais vider l'historique
+  history.pushState({screen: currentScreen}, '', null);
+
+  // Puis on gère la navigation selon l'écran actuel
+  if(currentScreen === 's-home'){
+    showConfirmQuit();
+  } else if(currentScreen === 's-items'){
+    showScreen('s-cats');
+  } else if(currentScreen === 's-cats'){
+    showScreen('s-home');
+  } else if(currentScreen === 's-summary'){
+    showScreen('s-cats');
+  } else if(currentScreen === 's-new-audit'){
+    showScreen('s-home');
+  } else {
+    showScreen('s-home');
+  }
+});
+
+let quitOverlay=null;
+function showConfirmQuit(){
+  if(quitOverlay) return;
+  quitOverlay=document.createElement('div');
+  quitOverlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;display:flex;align-items:flex-end';
+  quitOverlay.innerHTML=`<div style="width:100%;background:#fff;border-radius:16px 16px 0 0;padding:20px;font-family:Lato,sans-serif">
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;color:#1a2a2e">Quitter l'application ?</div>
+    <div style="font-size:13px;color:#6b8a90;margin-bottom:20px">Vos données sont sauvegardées. Vous pourrez rouvrir l'application depuis le fichier.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button onclick="confirmQuit()" style="background:#b71c1c;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:Lato,sans-serif;cursor:pointer">Quitter</button>
+      <button onclick="dismissQuit()" style="background:#fff;border:1px solid #dde3e5;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:Lato,sans-serif;cursor:pointer;color:#1a2a2e">Rester dans l'application</button>
+    </div>
+  </div>`;
+  document.body.appendChild(quitOverlay);
+}
+function dismissQuit(){
+  if(quitOverlay){quitOverlay.remove();quitOverlay=null;}
+}
+function confirmQuit(){
+  // On vide l'historique et on laisse Chrome fermer
+  dismissQuit();
+  history.go(-(history.length));
+  setTimeout(()=>window.close(),300);
+}
+
+// ── FS helpers ───────────────────────────────────────────
+async function setupFolder(){
+  try{
+    dirHandle=await window.showDirectoryPicker({mode:'readwrite'});
+    localStorage.setItem('folderName',dirHandle.name);
+    await loadAudits();
+    document.getElementById('folder-name').textContent=dirHandle.name;
+    navigate('s-home');
+  }catch(e){if(e.name!=='AbortError') toast('Erreur : '+e.message);}
+}
+async function writeJSON(n,d){const fh=await dirHandle.getFileHandle(n,{create:true});const w=await fh.createWritable();await w.write(JSON.stringify(d,null,2));await w.close();}
+async function readJSON(n){try{const fh=await dirHandle.getFileHandle(n);const f=await fh.getFile();return JSON.parse(await f.text());}catch{return null;}}
+async function writeFile(n,b){const fh=await dirHandle.getFileHandle(n,{create:true});const w=await fh.createWritable();await w.write(b);await w.close();}
+async function readAsDataURL(n){try{const fh=await dirHandle.getFileHandle(n);const f=await fh.getFile();return new Promise(r=>{const rd=new FileReader();rd.onload=e=>r(e.target.result);rd.readAsDataURL(f);});}catch{return null;}}
+async function loadAudits(){const d=await readJSON('audits.json');audits=d||[];}
+async function saveAudits(){await writeJSON('audits.json',audits);}
+
+// ── Screen ───────────────────────────────────────────────
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  currentScreen=id;
+  if(id==='s-home'){renderHome();checkInstallStatus();}
+  if(id==='s-cats') renderCats();
+  if(id==='s-summary') renderSummary();
+}
+function toast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+
+// ── Travaux ──────────────────────────────────────────────
+function toggleTravaux(el,val){
+  el.classList.toggle('active');
+  if(selectedTravaux.includes(val)) selectedTravaux=selectedTravaux.filter(v=>v!==val);
+  else selectedTravaux.push(val);
+}
+
+// ── Stats ────────────────────────────────────────────────
+function getStats(a){
+  let done=0,total=0,nc=0,am=0;
+  CATS.forEach(c=>c.items.forEach((_,i)=>{
+    total++;
+    const s=(a.items||{})[c.id+'_'+i];
+    if(s&&s.status) done++;
+    if(s&&s.status==='NC') nc++;
+    if(s&&s.status==='AM') am++;
+  }));
+  return{done,total,nc,am};
+}
+function getCatStats(a,catId){
+  const cat=CATS.find(c=>c.id===catId);
+  let done=0,nc=0,am=0,ok=0;
+  cat.items.forEach((_,i)=>{
+    const s=(a.items||{})[catId+'_'+i];
+    if(!s||!s.status) return;
+    done++;if(s.status==='NC')nc++;if(s.status==='AM')am++;if(s.status==='C')ok++;
+  });
+  return{done,total:cat.items.length,nc,am,ok};
+}
+
+// ── Home ─────────────────────────────────────────────────
+function renderHome(){
+  document.getElementById('folder-name').textContent=dirHandle?dirHandle.name:(localStorage.getItem('folderName')||'Non configuré');
+  const list=document.getElementById('audit-list');
+  const empty=document.getElementById('audit-list-empty');
+  if(!audits.length){empty.style.display='block';list.innerHTML='';return;}
+  empty.style.display='none';
+  list.innerHTML=audits.slice().reverse().map((a,ri)=>{
+    const i=audits.length-1-ri;
+    const st=getStats(a);
+    const pct=st.total?Math.round(st.done/st.total*100):0;
+    return `<div class="cat-card" onclick="openAudit(${i})">
+      <div class="cat-icon">📋</div>
+      <div class="cat-info">
+        <div class="cat-title">${a.chantier}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:1px">${a.date} · ${a.auditeur}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <span class="badge ${st.nc>0?'badge-ko':st.am>0?'badge-warn':'badge-pending'}">${st.nc>0?st.nc+' NC':st.am>0?st.am+' AM':st.done+'/'+st.total}</span>
+    </div>`;
+  }).join('');
+}
+function openAudit(idx){
+  currentAudit=idx;
+  document.getElementById('cat-screen-title').textContent=audits[idx].chantier;
+  navigate('s-cats');
+}
+
+// ── Create ───────────────────────────────────────────────
+async function createAudit(){
+  const chantier=document.getElementById('f-chantier').value.trim();
+  const date=document.getElementById('f-date').value;
+  const auditeur=document.getElementById('f-auditeur').value.trim();
+  if(!chantier||!date||!auditeur){toast('Remplissez les champs obligatoires (*)');return;}
+  const temp=document.getElementById('f-temp').value;
+  const hygro=document.getElementById('f-hygro').value;
+  const audit={
+    id:'audit_'+Date.now(),chantier,date,auditeur,
+    adresse:document.getElementById('f-adresse').value.trim(),
+    meteo:document.getElementById('f-meteo').value,
+    temp:temp?Number(temp):null,
+    hygro:hygro?Number(hygro):null,
+    travaux:[...selectedTravaux],
+    createdAt:new Date().toISOString(),
+    items:{},photos:{}
+  };
+  audits.push(audit);
+  await saveAudits();
+  currentAudit=audits.length-1;
+  document.getElementById('cat-screen-title').textContent=chantier;
+  ['f-chantier','f-adresse','f-auditeur','f-temp','f-hygro'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('f-meteo').value='';
+  selectedTravaux=[];
+  document.querySelectorAll('.travaux-chip').forEach(c=>c.classList.remove('active'));
+  navigate('s-cats');
+}
+
+// ── Cats ─────────────────────────────────────────────────
+function renderCats(){
+  const a=audits[currentAudit];
+  const td=document.getElementById('travaux-display');
+  const tc=document.getElementById('travaux-display-chips');
+  if(a.travaux&&a.travaux.length){
+    td.style.display='block';
+    tc.innerHTML=a.travaux.map(t=>`<span style="display:inline-block;background:var(--teal);color:#fff;border-radius:20px;padding:4px 12px;font-size:12px;margin:3px;font-weight:700">${t}</span>`).join('');
+  } else td.style.display='none';
+  document.getElementById('cat-list').innerHTML=CATS.map(cat=>{
+    const st=getCatStats(a,cat.id);
+    const pct=Math.round(st.done/st.total*100);
+    let badge=st.nc>0?`<span class="badge badge-ko">${st.nc} NC</span>`:
+      st.am>0?`<span class="badge badge-warn">${st.am} AM</span>`:
+      (st.done===st.total&&st.total>0)?`<span class="badge badge-ok">✓</span>`:
+      `<span class="badge badge-pending">${st.done}/${st.total}</span>`;
+    return `<div class="cat-card" onclick="openCat('${cat.id}')">
+      <div class="cat-icon">${cat.icon}</div>
+      <div class="cat-info"><div class="cat-title">${cat.label}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>${badge}
+    </div>`;
+  }).join('');
+}
+function openCat(catId){
+  currentCatId=catId;
+  document.getElementById('items-title').textContent=CATS.find(c=>c.id===catId).label;
+  renderItems();
+  navigate('s-items');
+}
+
+// ── Items ────────────────────────────────────────────────
+function renderItems(){
+  const a=audits[currentAudit];
+  const cat=CATS.find(c=>c.id===currentCatId);
+  document.getElementById('items-list').innerHTML=cat.items.map((item,i)=>{
+    const key=currentCatId+'_'+i;
+    const data=(a.items||{})[key]||{};
+    const photos=(a.photos||{})[key]||[];
+    const btns=STATUSES.map(s=>`<button class="status-btn ${data.status===s.v?'s-'+s.v:''}" onclick="setStatus('${key}','${s.v}')">${s.l}</button>`).join('');
+    const thumbs=photos.map((fn,pi)=>`<img class="photo-thumb" id="th-${key}-${pi}" src="" onclick="openViewer('${key}',${pi})">`).join('');
+    return `<div class="item-block" id="item-${key}">
+      <div class="item-title">${item.t}</div>
+      ${item.sub?`<div class="sub-item">↳ ${item.sub}</div>`:''}
+      <div class="status-row">${btns}</div>
+      <label>Remarques</label>
+      <textarea placeholder="Observations, constats..." oninput="setNote('${key}',this.value)" rows="2">${data.note||''}</textarea>
+      <div style="margin-top:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--muted);font-weight:700">PHOTOS (${photos.length})</span>
+          <button style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--teal-dark);font-family:'Lato',sans-serif;font-weight:700" onclick="triggerPhoto('${key}')">+ Photo</button>
+        </div>
+        <div class="photo-grid" id="photos-${key}">${thumbs}</div>
+      </div>
+    </div>`;
+  }).join('');
+  cat.items.forEach((_,i)=>{
+    const key=currentCatId+'_'+i;
+    const photos=(a.photos||{})[key]||[];
+    photos.forEach((fn,pi)=>loadThumb(key,pi,fn));
+  });
+}
+async function loadThumb(key,pi,fn){
+  const img=document.getElementById(`th-${key}-${pi}`);
+  if(!img) return;
+  const d=await readAsDataURL(fn);
+  if(d&&img) img.src=d;
+}
+async function setStatus(key,val){
+  const a=audits[currentAudit];
+  if(!a.items[key]) a.items[key]={};
+  a.items[key].status=a.items[key].status===val?null:val;
+  await saveAudits();renderItems();renderCats();
+}
+async function setNote(key,val){
+  const a=audits[currentAudit];
+  if(!a.items[key]) a.items[key]={};
+  a.items[key].note=val;
+  await saveAudits();
+}
+
+// ── Photos ───────────────────────────────────────────────
+function triggerPhoto(key){currentPhotoKey=key;document.getElementById('photo-menu').style.display='block';}
+function closePhotoMenu(){document.getElementById('photo-menu').style.display='none';}
+async function handlePhotos(e){
+  const files=Array.from(e.target.files);
+  const a=audits[currentAudit];
+  if(!a.photos[currentPhotoKey]) a.photos[currentPhotoKey]=[];
+  for(const f of files){
+    const ext=f.name.split('.').pop()||'jpg';
+    const fn=`photo_${a.id}_${currentPhotoKey}_${Date.now()}_${Math.random().toString(36).slice(2,6)}.${ext}`;
+    await writeFile(fn,f);
+    a.photos[currentPhotoKey].push(fn);
+  }
+  await saveAudits();renderItems();
+  toast(`${files.length} photo(s) ajoutée(s)`);
+  e.target.value='';
+}
+async function openViewer(key,idx){
+  const a=audits[currentAudit];
+  const fn=a.photos[key][idx];
+  const d=await readAsDataURL(fn);
+  document.getElementById('viewer-img').src=d||'';
+  document.getElementById('viewer-del').onclick=()=>removePhoto(key,idx);
+  document.getElementById('photo-viewer').style.display='flex';
+}
+function closeViewer(){document.getElementById('photo-viewer').style.display='none';}
+async function removePhoto(key,idx){
+  if(!confirm('Supprimer cette photo ?')) return;
+  audits[currentAudit].photos[key].splice(idx,1);
+  await saveAudits();closeViewer();renderItems();toast('Photo supprimée');
+}
+
+// ── Summary ──────────────────────────────────────────────
+function renderSummary(){
+  const a=audits[currentAudit];
+  const st=getStats(a);
+  const pct=st.total?Math.round(st.done/st.total*100):0;
+  const sl={'C':'badge-ok','NC':'badge-ko','AM':'badge-warn','NV':'badge-na','NN':'badge-na'};
+  const ll={'C':'Conforme','NC':'Non conforme','AM':'À améliorer','NV':'Non vérifié','NN':'Non concerné'};
+  let meteoLine=a.meteo||'';
+  if(a.temp!=null) meteoLine+=(meteoLine?' · ':'')+a.temp+'°C';
+  if(a.hygro!=null) meteoLine+=(meteoLine?' · ':'')+a.hygro+'% HR';
+  let html=`<div class="card" style="text-align:center;padding:20px">
+    <div style="width:68px;height:68px;border-radius:50%;border:3px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--teal);margin:0 auto 12px">${pct}%</div>
+    <div style="font-weight:700;font-size:16px">${a.chantier}</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">${a.date} · ${a.auditeur}</div>
+    ${meteoLine?`<div style="font-size:12px;color:var(--muted);margin-top:2px">🌤 ${meteoLine}</div>`:''}
+    ${a.travaux&&a.travaux.length?`<div style="margin-top:10px">${a.travaux.map(t=>`<span style="display:inline-block;background:var(--teal);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;margin:2px;font-weight:700">${t}</span>`).join('')}</div>`:''}
+    <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div style="background:#e6f4ea;border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#1e6e35">${st.done}</div><div style="font-size:11px;color:#555">renseignés</div></div>
+      <div style="background:#fdecea;border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#b71c1c">${st.nc}</div><div style="font-size:11px;color:#555">non conformes</div></div>
+      <div style="background:#fff4e0;border-radius:8px;padding:10px"><div style="font-size:20px;font-weight:700;color:#b85c00">${st.am}</div><div style="font-size:11px;color:#555">à améliorer</div></div>
+    </div>
+  </div>`;
+  html+=CATS.map(cat=>{
+    const cst=getCatStats(a,cat.id);
+    const rows=cat.items.map((item,i)=>{
+      const key=cat.id+'_'+i;
+      const data=(a.items||{})[key]||{};
+      const photos=(a.photos||{})[key]||[];
+      if(!data.status&&!data.note&&!photos.length) return '';
+      return `<div style="padding:10px 0;border-bottom:0.5px solid #f0f0f0">
+        <div style="display:flex;justify-content:space-between;align-items:start;gap:8px">
+          <div style="font-size:13px;font-weight:700;flex:1">${item.t}</div>
+          ${data.status?`<span class="badge ${sl[data.status]}">${ll[data.status]}</span>`:''}
+        </div>
+        ${data.note?`<div style="font-size:12px;color:var(--muted);margin-top:4px">${data.note}</div>`:''}
+        ${photos.length?`<div style="font-size:11px;color:var(--teal);margin-top:4px;font-weight:700">📷 ${photos.length} photo(s)</div>`:''}
+      </div>`;
+    }).filter(Boolean).join('');
+    return `<div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:18px">${cat.icon}</span>
+        <span style="font-weight:700;font-size:14px">${cat.label}</span>
+        <span style="margin-left:auto" class="badge ${cst.nc>0?'badge-ko':cst.am>0?'badge-warn':'badge-pending'}">${cst.nc>0?cst.nc+' NC':cst.am>0?cst.am+' AM':cst.done+'/'+cst.total}</span>
+      </div>
+      ${rows||'<div style="font-size:13px;color:var(--muted)">Aucun item renseigné</div>'}
+    </div>`;
+  }).join('');
+  document.getElementById('summary-content').innerHTML=html;
+}
+
+// ── Export ───────────────────────────────────────────────
+async function exportReport(){
+  const a=audits[currentAudit];
+  toast('Génération du rapport...', 6000);
+  const ll={'C':'Conforme','NC':'Non conforme','AM':'À améliorer','NV':'Non vérifié','NN':'Non concerné'};
+  const cl={'C':'#1e6e35','NC':'#b71c1c','AM':'#b85c00','NV':'#546e7a','NN':'#78909c'};
+  const bg={'C':'#e6f4ea','NC':'#fdecea','AM':'#fff4e0','NV':'#f5f7f8','NN':'#f5f7f8'};
+  const st=getStats(a);
+
+  // Météo line
+  let meteoLine=a.meteo||'';
+  if(a.temp!=null) meteoLine+=(meteoLine?' · ':'')+`${a.temp} °C`;
+  if(a.hygro!=null) meteoLine+=(meteoLine?' · ':'')+`Humidité : ${a.hygro} %`;
+
+  let body=`
+  <div style="background:#006878;padding:32px 36px;margin-bottom:28px">
+    <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Rapport de visite</div>
+    <h1 style="color:#fff;font-size:24px;margin-bottom:4px;font-weight:700">${a.chantier}</h1>
+    <div style="color:rgba(255,255,255,.85);font-size:14px">${a.adresse||''}</div>
+  </div>
+
+  <table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px">
+    <tr>
+      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5;width:22%">Date de visite</td>
+      <td style="padding:9px 12px;border:1px solid #dde3e5;width:28%">${a.date}</td>
+      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5;width:22%">Auditeur</td>
+      <td style="padding:9px 12px;border:1px solid #dde3e5">${a.auditeur}</td>
+    </tr>
+    ${meteoLine?`<tr>
+      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Conditions météo</td>
+      <td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${meteoLine}</td>
+    </tr>`:''}
+    ${a.travaux&&a.travaux.length?`<tr>
+      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Travaux en cours</td>
+      <td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${a.travaux.join(', ')}</td>
+    </tr>`:''}
+    <tr>
+      <td style="padding:9px 12px;border:1px solid #dde3e5;font-weight:700;background:#f0f4f5">Généré le</td>
+      <td style="padding:9px 12px;border:1px solid #dde3e5" colspan="3">${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}</td>
+    </tr>
+  </table>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:24px 0 32px">
+    <div style="background:#f0f4f5;border-radius:8px;padding:14px;text-align:center;border:1px solid #dde3e5">
+      <div style="font-size:26px;font-weight:700;color:#006878">${st.done}</div>
+      <div style="font-size:11px;color:#6b8a90;margin-top:2px">Items renseignés</div>
+    </div>
+    <div style="background:#e6f4ea;border-radius:8px;padding:14px;text-align:center;border:1px solid #c8e6c9">
+      <div style="font-size:26px;font-weight:700;color:#1e6e35">${st.done-st.nc-st.am}</div>
+      <div style="font-size:11px;color:#6b8a90;margin-top:2px">Conformes</div>
+    </div>
+    <div style="background:#fff4e0;border-radius:8px;padding:14px;text-align:center;border:1px solid #ffe0b2">
+      <div style="font-size:26px;font-weight:700;color:#b85c00">${st.am}</div>
+      <div style="font-size:11px;color:#6b8a90;margin-top:2px">À améliorer</div>
+    </div>
+    <div style="background:#fdecea;border-radius:8px;padding:14px;text-align:center;border:1px solid #ffcdd2">
+      <div style="font-size:26px;font-weight:700;color:#b71c1c">${st.nc}</div>
+      <div style="font-size:11px;color:#6b8a90;margin-top:2px">Non conformes</div>
+    </div>
+  </div>`;
+
+  for(const cat of CATS){
+    let rows='';
+    let hasContent=false;
+    for(let i=0;i<cat.items.length;i++){
+      const key=cat.id+'_'+i;
+      const data=(a.items||{})[key]||{};
+      const photoFiles=(a.photos||{})[key]||[];
+      if(!data.status&&!data.note&&!photoFiles.length) continue;
+      hasContent=true;
+
+      // Build photos : 2 per row, generous size
+      let photoHtml='';
+      if(photoFiles.length){
+        photoHtml='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">';
+        for(const fn of photoFiles){
+          const d=await readAsDataURL(fn);
+          if(d) photoHtml+=`<div style="flex:0 0 calc(50% - 4px)"><img src="${d}" style="width:100%;height:180px;object-fit:cover;border-radius:6px;border:1px solid #dde3e5;display:block"></div>`;
+        }
+        photoHtml+='</div>';
+      }
+      const stat=data.status?`<div style="display:inline-block;background:${bg[data.status]};color:${cl[data.status]};padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;margin-bottom:${data.note||photoHtml?'8px':'0'}">${ll[data.status]}</div>`:'';
+      rows+=`<tr>
+        <td style="padding:12px 14px;border:1px solid #dde3e5;vertical-align:top;width:30%">
+          <div style="font-weight:700;font-size:13px;color:#1a2a2e">${cat.items[i].t}</div>
+          ${cat.items[i].sub?`<div style="font-size:11px;color:#6b8a90;margin-top:3px;line-height:1.4">${cat.items[i].sub}</div>`:''}
+        </td>
+        <td style="padding:12px 14px;border:1px solid #dde3e5;vertical-align:top">
+          ${stat}
+          ${data.note?`<div style="font-size:13px;color:#333;line-height:1.5">${data.note}</div>`:''}
+          ${photoHtml}
+        </td>
+      </tr>`;
+    }
+    if(!hasContent) continue;
+    body+=`<div style="margin-top:32px">
+      <div style="background:#006878;color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;font-weight:700;font-size:14px">${cat.icon} ${cat.label}</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="background:#f0f4f5">
+          <th style="padding:9px 14px;border:1px solid #dde3e5;text-align:left;font-size:12px;color:#6b8a90;font-weight:700;width:30%">POINT EXAMINÉ</th>
+          <th style="padding:9px 14px;border:1px solid #dde3e5;text-align:left;font-size:12px;color:#6b8a90;font-weight:700">STATUT · REMARQUES · PHOTOS</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }
+
+  const html=`<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<title>Audit ${a.chantier} – ${a.date}</title>
+<style>
+  body{font-family:'Lato',Arial,sans-serif;color:#1a2a2e;margin:0;padding:30px;max-width:960px;margin:0 auto}
+  @media print{
+    body{padding:0;max-width:100%}
+    @page{margin:15mm}
+    table{page-break-inside:auto}
+    tr{page-break-inside:avoid}
+    h2{page-break-after:avoid}
+  }
+</style>
+</head>
+<body>
+${body}
+<div style="margin-top:40px;padding-top:12px;border-top:1px solid #dde3e5;font-size:11px;color:#aaa">
+  Rapport généré le ${new Date().toLocaleDateString('fr-FR')} — Application Audit Environnemental Chantier
+</div>
+</body>
+</html>`;
+
+  const fname=`Rapport_${a.chantier.replace(/[^a-zA-Z0-9]/g,'_')}_${a.date}.html`;
+  await writeFile(fname,new Blob([html],{type:'text/html;charset=utf-8'}));
+  toast('✅ Rapport sauvegardé : '+fname, 5000);
+  const w=window.open('','_blank');
+  if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),800);}
+}
+
+function dismissInstall(){
+  localStorage.setItem('installDismissed','1');
+  document.getElementById('install-banner').style.display='none';
+}
+function checkInstallStatus(){
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  const dismissed = localStorage.getItem('installDismissed');
+  const banner = document.getElementById('install-banner');
+  if(banner && !isStandalone && !dismissed) banner.style.display='block';
+}
+
+// ── Init ─────────────────────────────────────────────────
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+const sn=localStorage.getItem('folderName');
+if(sn) document.getElementById('folder-name').textContent=sn;
+history.replaceState({screen:'s-setup'},'',null);
+if(!('showDirectoryPicker' in window)) showScreen('s-compat');
+else showScreen('s-setup');
+</script>
+</body>
+</html>
