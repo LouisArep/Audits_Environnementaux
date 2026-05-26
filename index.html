@@ -349,16 +349,27 @@ let currentScreen='s-setup';
 const navStack=[];
 const BACK_MAP={'s-new-audit':'s-home','s-cats':'s-home','s-items':'s-cats','s-summary':'s-cats','s-settings':'s-home'};
 
+let isNavigating=false; // verrou anti-double-retour
+
 function navigate(id){
   navStack.push(currentScreen);
   history.pushState({n:navStack.length},'',null);
   showScreen(id);
 }
 window.addEventListener('popstate',()=>{
+  if(isNavigating) return;
+  isNavigating=true;
+  // Réinjection synchrone d'un état dans l'historique pour intercepter le prochain retour
   history.pushState({n:navStack.length},'',null);
   goBack();
+  setTimeout(()=>{ isNavigating=false; }, 300); // verrou 300ms pour éviter le double-tap
 });
 function goBack(){
+  if(quitOverlay){
+    // Si la popup de confirmation est déjà ouverte, le retour la ferme
+    dismissQuit();
+    return;
+  }
   if(currentScreen==='s-home'){showConfirmQuit();return;}
   const prev=navStack.length>0?navStack.pop():(BACK_MAP[currentScreen]||'s-home');
   showScreen(prev);
@@ -370,16 +381,12 @@ function showConfirmQuit(){
   quitOverlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;display:flex;align-items:flex-end';
   quitOverlay.innerHTML=`<div style="width:100%;background:#fff;border-radius:16px 16px 0 0;padding:20px;font-family:Lato,sans-serif">
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;color:#1a2a2e">Quitter l'application ?</div>
-    <div style="font-size:13px;color:#6b8a90;margin-bottom:20px">Vos données sont sauvegardées. Vous pourrez rouvrir l'application depuis le fichier.</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <button onclick="confirmQuit()" style="background:#b71c1c;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:Lato,sans-serif;cursor:pointer">Quitter</button>
-      <button onclick="dismissQuit()" style="background:#fff;border:1px solid #dde3e5;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:Lato,sans-serif;cursor:pointer;color:#1a2a2e">Rester dans l'application</button>
-    </div>
+    <div style="font-size:13px;color:#6b8a90;margin-bottom:20px">Vos données sont sauvegardées. Utilisez le bouton retour du téléphone pour fermer l'application.</div>
+    <button onclick="dismissQuit()" style="background:#006878;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:Lato,sans-serif;cursor:pointer;width:100%">Rester dans l'application</button>
   </div>`;
   document.body.appendChild(quitOverlay);
 }
 function dismissQuit(){if(quitOverlay){quitOverlay.remove();quitOverlay=null;}}
-function confirmQuit(){dismissQuit();history.go(-(history.length));setTimeout(()=>window.close(),300);}
 
 // ── FS helpers ───────────────────────────────────────────
 async function setupFolder(){
