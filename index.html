@@ -896,7 +896,14 @@ async function exportWord() {
     children.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, borders: CELL, rows: tableRows }));
   }
 
-  const blob = await Packer.toBlob(new Document({ sections: [{ children }] }));
+  const blob = await Packer.toBlob(new Document({
+    styles: {
+      default: {
+        document: { run: { font: 'Lato' } },
+      },
+    },
+    sections: [{ children }],
+  }));
   const url  = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
