@@ -1,6 +1,7 @@
 # Audit Environnemental Chantier
 
 Application mobile de suivi environnemental de chantier, conçue pour les visites terrain. Elle permet de renseigner des points de contrôle par catégorie, d'associer des photos à chaque item et de générer un rapport exportable.
+
 (Développé avec l'assistance de Claude - Anthropic, sur la base d'outils d'équipe)
 
 ---
